@@ -15,9 +15,11 @@ body {
   font-family: "Noto Sans", sans-serif;
 }
 
-input {
+input,
+button {
   font-family: "Noto Sans", sans-serif;
 }
+
 
 button {
   cursor: pointer;
