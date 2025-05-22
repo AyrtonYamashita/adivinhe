@@ -1,0 +1,26 @@
+:root {
+  font-size: 1rem
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #F5F5FA;
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+}
+
+button {
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+button:hover {
+  filter: brightness(0.9);
+}
