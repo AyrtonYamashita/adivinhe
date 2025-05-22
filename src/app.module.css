@@ -28,3 +28,9 @@
   gap: .75rem;
   margin-top: .75rem;
 }
+
+h4 {
+    color: #32325f;
+  font-weight: 600;
+  margin: 0.75rem 0;
+}
