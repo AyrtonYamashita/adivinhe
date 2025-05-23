@@ -10,10 +10,9 @@ import { Button } from "./components/Button";
 import { LettersUsed, LetterUsedProps } from "./components/LettersUsed";
 
 function App() {
-  const [attempts, setAttempts] = useState(0);
   const [letter, setLetter] = useState("");
   const [challenge, setChallenge] = useState<Challenge | null>(null);
-  const [letterUsed, setletterUsed] = useState<LetterUsedProps[]>([]);
+  const [lettersUsed, setLettersUsed] = useState<LetterUsedProps[]>([]);
   const [score, setScore] = useState(0);
 
   function handleRestartGame() {
@@ -30,7 +29,7 @@ function App() {
     }
 
     const value = letter.toUpperCase();
-    const exists = letterUsed.find(
+    const exists = lettersUsed.find(
       (used) => used.value.toUpperCase() === value
     );
 
@@ -46,7 +45,7 @@ function App() {
     const correct = hits > 0;
     const currentScore = score + hits;
 
-    setletterUsed((prevState) => [...prevState, { value, correct }]);
+    setLettersUsed((prevState) => [...prevState, { value, correct }]);
     setScore(currentScore);
     setLetter("");
   }
@@ -55,8 +54,9 @@ function App() {
     const index = Math.floor(Math.random() * WORDS.length);
     const randomWord = WORDS[index];
     setChallenge(randomWord);
-    setAttempts(0);
+    setScore(0);
     setLetter("");
+    setLettersUsed([]);
   }
 
   useEffect(() => {
@@ -68,12 +68,22 @@ function App() {
   return (
     <div className={styles.container}>
       <main>
-        <Header current={attempts} max={10} onRestart={handleRestartGame} />
+        <Header current={score} max={10} onRestart={handleRestartGame} />
         <Tip tip={challenge.tip} />
         <div className={styles.words}>
-          {challenge.word.split("").map(() => (
-            <Letter />
-          ))}
+          {challenge.word.split("").map((letter, index) => {
+            const lUsed = lettersUsed.find(
+              (used) => used.value.toUpperCase() === letter.toUpperCase()
+            );
+
+            return (
+              <Letter
+                key={index}
+                value={lUsed?.value}
+                color={lUsed?.correct ? "correct" : "default"}
+              />
+            );
+          })}
         </div>
 
         <h4>Palpite</h4>
@@ -88,7 +98,7 @@ function App() {
           <Button title="Confirmar" onClick={handleConfirm} />
         </div>
 
-        <LettersUsed data={letterUsed} />
+        <LettersUsed data={lettersUsed} />
       </main>
     </div>
   );
