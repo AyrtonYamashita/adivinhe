@@ -18,7 +18,10 @@ function App() {
   const ATTEMPT_MARGIN = 5;
 
   function handleRestartGame() {
-    alert("Reiniciar o jogo!");
+    const isConfirmed = confirm(
+      "Você tem certeza que deseja reiniciar o jogo?"
+    );
+    if (isConfirmed) startGame();
   }
 
   function handleConfirm() {
@@ -36,7 +39,9 @@ function App() {
     );
 
     if (exists) {
-      return alert(`Você já utilizou a letra: ${value}`);
+      alert(`Você já utilizou a letra: ${value}`);
+      setLetter("");
+      return;
     }
 
     const hits = challenge.word
@@ -61,9 +66,29 @@ function App() {
     setLettersUsed([]);
   }
 
+  function endGame(message: string) {
+    alert(message);
+    startGame();
+    return;
+  }
+
   useEffect(() => {
     startGame();
   }, []);
+
+  useEffect(() => {
+    if (!challenge) return;
+    setTimeout(() => {
+      if (score === challenge.word.length) {
+        endGame(`Parabéns você descobriu a palavra: ${challenge.word}`);
+        return;
+      }
+      const ATTEMPT_LIMIT = challenge.word.length + ATTEMPT_MARGIN;
+      if (lettersUsed.length === ATTEMPT_LIMIT) {
+        return endGame(`Que pena, você usou todas suas tentativas.`);
+      }
+    }, 200);
+  }, [score, lettersUsed.length]);
 
   if (!challenge) return;
 
@@ -100,6 +125,11 @@ function App() {
             placeholder="?"
             onChange={(e) => setLetter(e.target.value)}
             value={letter}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleConfirm();
+              }
+            }}
           />
           <Button title="Confirmar" onClick={handleConfirm} />
         </div>
