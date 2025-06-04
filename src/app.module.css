@@ -12,6 +12,7 @@
   padding: 2rem;
   padding-top: 4.5rem;
   border-radius: 0.75rem;
+  transition: height .2s ease;
 }
 
 .container .words {
@@ -30,7 +31,33 @@
 }
 
 h4 {
-    color: #32325f;
+  color: #32325f;
   font-weight: 600;
   margin: 0.75rem 0;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-10px);
+  }
+
+  50% {
+    transform: translateX(10px);
+  }
+
+  75% {
+    transform: translateX(-10px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.shake {
+  animation: shake .3s ease-in-out
 }

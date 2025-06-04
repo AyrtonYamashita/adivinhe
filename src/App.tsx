@@ -14,6 +14,7 @@ function App() {
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [lettersUsed, setLettersUsed] = useState<LetterUsedProps[]>([]);
   const [score, setScore] = useState(0);
+  const [shake, setShake] = useState(false);
 
   const ATTEMPT_MARGIN = 5;
 
@@ -55,6 +56,11 @@ function App() {
     setLettersUsed((prevState) => [...prevState, { value, correct }]);
     setScore(currentScore);
     setLetter("");
+
+    if (!correct) {
+      setShake(true);
+      setTimeout(() => setShake(false), 300);
+    }
   }
 
   function startGame() {
@@ -101,7 +107,7 @@ function App() {
           onRestart={handleRestartGame}
         />
         <Tip tip={challenge.tip} />
-        <div className={styles.words}>
+        <div className={`${styles.words} ${shake && styles.shake}`}>
           {challenge.word.split("").map((letter, index) => {
             const lUsed = lettersUsed.find(
               (used) => used.value.toUpperCase() === letter.toUpperCase()
